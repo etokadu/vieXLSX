@@ -65,7 +65,7 @@ vieXLSX operates through a two-stage pipeline: a CLI/Interactive Client and an E
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/vinhkudo/vieXLSX.git
+git clone https://github.com/etokadu/vieXLSX.git
 cd vieXLSX
 ```
 
@@ -153,8 +153,8 @@ Categories, tags, and app metadata are managed in `config.json`:
 {
   "app_name": "vieXLSX",
   "version": "2.0.0",
-  "author": "Kudo",
-  "github": "https://github.com/vinhkudo/vieXLSX",
+  "author": "Kadu",
+  "github": "https://github.com/etokadu",
   "category_options": [
     "Work",
     "Personal",
