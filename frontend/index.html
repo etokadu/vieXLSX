@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#eef1ea" />
+  <title>vieXLSX — Task workspace</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Điều hướng chính">
+      <div class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <div>
+          <strong>vieXLSX</strong>
+          <span>workspace · v2</span>
+        </div>
+      </div>
+
+      <nav class="primary-nav">
+        <button class="nav-item active" data-view="overview"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5M6 10v9h5v-5h2v5h5v-9"/></svg><span>Tổng quan</span></button>
+        <button class="nav-item" data-view="tasks"><svg class="nav-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M9.5 4v16"/></svg><span>Tất cả công việc</span> <span class="nav-count" id="navTaskCount">0</span></button>
+        <button class="nav-item" data-view="today"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.5V12l3 2"/></svg><span>Hôm nay</span></button>
+        <button class="nav-item" data-view="upcoming"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M5 12h13M12 6l6.5 6L12 18"/></svg><span>Sắp tới</span></button>
+      </nav>
+
+      <div class="sidebar-section">
+        <div class="section-label"><span>Danh mục</span><button class="tiny-button" id="addCategoryButton" title="Thêm danh mục">+</button></div>
+        <div id="categoryList" class="category-list"></div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-view="settings"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1"/><path d="M12 3.5v2.4M12 18.1v2.4M20.5 12h-2.4M5.9 12H3.5M17.5 6.5l-1.7 1.7M8.2 15.8l-1.7 1.7M17.5 17.5l-1.7-1.7M8.2 8.2 6.5 6.5"/></svg><span>Cài đặt</span></button>
+        <div class="profile"><div class="avatar" id="profileAvatar">K</div><div><strong id="usernameLabel">Kadu</strong><span>Owner</span></div></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb"><strong id="breadcrumbTitle">Tổng quan</strong></div>
+        <div class="topbar-actions">
+          <select class="language-select" id="languageSelect" aria-label="Language"><option value="vi">VI</option><option value="en">EN</option></select>
+          <button class="icon-button" id="exportButton" title="Xuất dữ liệu JSON" aria-label="Xuất dữ liệu"><svg viewBox="0 0 24 24"><path d="M12 4v11.5M7.5 11l4.5 4.5L16.5 11M5 19.5h14"/></svg></button>
+          <button class="button button-primary" id="newTaskButton"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Công việc mới</button>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <section class="view-panel active" id="overviewView">
+          <div class="page-intro">
+            <div><p class="eyebrow" id="todayLabel">Thứ sáu, 05 tháng 09, 2026</p><h1>Chào Kadu, <em>tập trung nhé.</em></h1><p class="intro-copy">Một góc nhìn rõ ràng cho những việc quan trọng nhất hôm nay.</p></div>
+            <button class="focus-card" id="focusButton"><span class="focus-orbit">✦</span><span class="focus-copy"><span>Tiêu điểm hôm nay</span><strong id="focusText">Chọn một việc để bắt đầu</strong></span><span class="focus-arrow">→</span></button>
+          </div>
+
+          <section class="board-shell" aria-label="Bảng công việc">
+            <div class="board-heading"><div><span class="board-month">Tháng 09</span><strong>Board</strong><span class="board-subtitle">Công việc tuần này</span></div><div class="board-actions"><button class="button button-quiet" id="boardFilterButton">Bộ lọc <svg viewBox="0 0 24 24"><path d="M4 7h16M7 12h10M10 17h4"/></svg></button><button class="button button-primary" id="boardNewTask">+ Tạo công việc</button></div></div>
+            <div class="kanban-board" id="kanbanBoard"></div>
+          </section>
+
+          <div class="stats-grid" id="statsGrid">
+            <article class="stat-card stat-primary"><div class="stat-top"><span>Tiến độ tuần này</span><svg class="stat-icon" viewBox="0 0 24 24"><path d="M4 15l5-6 4 3 7-8"/></svg></div><strong id="progressValue" data-count="0">0%</strong><div class="progress-track"><span id="progressBar"></span></div><p id="progressCaption">0 / 0 công việc hoàn thành</p></article>
+            <article class="stat-card"><div class="stat-top"><span>Đang thực hiện</span><svg class="stat-icon green" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/></svg></div><strong id="activeValue" data-count="0">0</strong><p>việc cần bạn chú ý</p></article>
+            <article class="stat-card"><div class="stat-top"><span>Đến hạn hôm nay</span><svg class="stat-icon coral" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.5V12l3 2"/></svg></div><strong id="todayValue" data-count="0">0</strong><p id="overdueCaption">Không có việc quá hạn</p></article>
+            <article class="stat-card"><div class="stat-top"><span>Thời gian đã lưu</span><svg class="stat-icon yellow" viewBox="0 0 24 24"><path d="M12 3.5v3M12 17.5v3M4.5 12h3M16.5 12h3M6.5 6.5l2 2M15.5 15.5l2 2M17.5 6.5l-2 2M8.5 15.5l-2 2"/></svg></div><strong>4.5h</strong><p>so với tuần trước <b class="positive">+18%</b></p></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="content-card priority-card"><div class="card-heading"><div><p class="eyebrow">Cần chú ý</p><h2>Việc ưu tiên</h2></div><button class="text-button" data-view="tasks">Xem tất cả <span>→</span></button></div><div id="priorityTasks" class="priority-list"></div></section>
+            <section class="content-card activity-card"><div class="card-heading"><div><p class="eyebrow">Nhịp làm việc</p><h2>Hoạt động gần đây</h2></div><button class="icon-button subtle" title="Làm mới" id="refreshActivity"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.7L20 8M20 4v4h-4M20 12a8 8 0 0 1-13.7 5.7L4 16M4 20v-4h4"/></svg></button></div><div class="activity-chart" id="activityChart"></div><div class="chart-labels"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span></div></section>
+          </div>
+          <section class="content-card recent-card"><div class="card-heading"><div><p class="eyebrow">Cập nhật mới</p><h2>Công việc gần đây</h2></div><button class="text-button" data-view="tasks">Mở danh sách <span>→</span></button></div><div id="recentTasks" class="task-table"></div></section>
+        </section>
+
+        <section class="view-panel" id="tasksView">
+          <div class="page-title-row"><div><p class="eyebrow">Task library</p><h1>Tất cả công việc</h1><p class="intro-copy">Quản lý, lọc và cập nhật toàn bộ đầu việc của bạn.</p></div><button class="button button-primary" id="newTaskButtonAlt"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Công việc mới</button></div>
+          <div class="toolbar"><div class="search-wrap"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="m20 20-4.3-4.3"/></svg><input id="searchInput" type="search" placeholder="Tìm theo tên, mô tả, tag..." /></div><div class="filter-pills" id="statusFilters"><button class="filter-pill active" data-status="all">Tất cả</button><button class="filter-pill" data-status="todo">Chưa làm</button><button class="filter-pill" data-status="in_progress">Đang làm</button><button class="filter-pill" data-status="done">Hoàn tất</button></div><select id="categoryFilter" class="sort-select"><option value="all">Tất cả danh mục</option></select><select id="sortSelect" class="sort-select"><option value="priority">Ưu tiên cao nhất</option><option value="due_date">Hạn gần nhất</option><option value="created_time">Mới thêm</option><option value="title">Tên A-Z</option></select></div>
+          <div class="list-summary"><span id="listSummary">0 công việc</span><button class="text-button" id="clearCompleted">Dọn việc đã xong</button></div>
+          <div class="task-columns" aria-hidden="true"><span></span><span></span><span>Công việc</span><span>Hạn</span><span></span></div>
+          <div id="allTasks" class="all-task-list"></div>
+        </section>
+
+        <section class="view-panel" id="settingsView"><div class="page-title-row"><div><p class="eyebrow">Workspace preferences</p><h1>Cài đặt</h1><p class="intro-copy">Điều chỉnh cách vieXLSX hoạt động cho bạn.</p></div></div><div class="settings-layout"><section class="content-card settings-card"><div class="setting-row"><div><h3>Tên workspace</h3><p>Tên hiển thị trên app desktop.</p></div><input class="setting-input" id="appNameInput" value="vieXLSX" /></div><div class="setting-row"><div><h3>Username</h3><p>Tên hiển thị ở sidebar.</p></div><input class="setting-input" id="usernameInput" value="Kadu" /></div><div class="setting-row"><div><h3>Tự động lưu Excel</h3><p>Lưu ngay mọi thay đổi vào workbook.</p></div><label class="switch"><input type="checkbox" id="autosaveToggle" checked /><span></span></label></div><div class="setting-row"><div><h3>Hiện hoạt động</h3><p>Ẩn biểu đồ để giao diện nhẹ hơn.</p></div><label class="switch"><input type="checkbox" id="activityToggle" checked /><span></span></label></div><div class="setting-row"><div><h3>Hiện thống kê</h3><p>Ẩn các thẻ số liệu ở tổng quan.</p></div><label class="switch"><input type="checkbox" id="statsToggle" checked /><span></span></label></div><div class="setting-row"><div><h3>Đồng bộ Excel</h3><p>Xuất dữ liệu JSON khi cần backup.</p></div><button class="button button-secondary" id="settingsExport">Xuất JSON</button></div></section><section class="content-card settings-card"><div class="card-heading"><div><p class="eyebrow">Personalization</p><h2>Danh mục & tag</h2></div></div><div id="settingsCategories" class="settings-tags"></div><div class="add-inline"><input id="newCategoryInput" placeholder="Tên danh mục mới" /><button class="button button-secondary" id="saveCategory">Thêm</button></div></section></div></section>
+
+        <section class="view-panel" id="todayView"><div class="page-title-row"><div><p class="eyebrow">Daily focus</p><h1>Hôm nay</h1><p class="intro-copy">Những việc cần được xử lý trong ngày.</p></div></div><div id="todayTasks" class="all-task-list"></div></section>
+        <section class="view-panel" id="upcomingView"><div class="page-title-row"><div><p class="eyebrow">Next horizon</p><h1>Sắp tới</h1><p class="intro-copy">Giữ nhịp chủ động cho những ngày kế tiếp.</p></div></div><div id="upcomingTasks" class="all-task-list"></div></section>
+      </div>
+    </main>
+  </div>
+
+  <nav class="mobile-tabbar" aria-label="Điều hướng nhanh">
+    <button class="tab-item active" data-view="overview"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5M6 10v9h5v-5h2v5h5v-9"/></svg><span>Tổng quan</span></button>
+    <button class="tab-item" data-view="tasks"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M9.5 4v16"/></svg><span>Công việc</span></button>
+    <button class="tab-item tab-item-fab" id="mobileNewTask" aria-label="Công việc mới"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button class="tab-item" data-view="today"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.5V12l3 2"/></svg><span>Hôm nay</span></button>
+    <button class="tab-item" data-view="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1"/><path d="M12 3.5v2.4M12 18.1v2.4M20.5 12h-2.4M5.9 12H3.5M17.5 6.5l-1.7 1.7M8.2 15.8l-1.7 1.7M17.5 17.5l-1.7-1.7M8.2 8.2 6.5 6.5"/></svg><span>Cài đặt</span></button>
+  </nav>
+
+  <div class="modal-backdrop" id="taskModal" hidden><form class="modal" id="taskForm"><div class="modal-header"><div><p class="eyebrow">New task</p><h2 id="modalTitle">Tạo công việc</h2></div><button type="button" class="icon-button" data-close-modal aria-label="Đóng"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><label class="field field-wide"><span><i>A</i>Tên công việc</span><input id="taskTitle" required placeholder="Ví dụ: Chuẩn bị báo cáo tuần" /></label><label class="field field-wide"><span><i>B</i>Mô tả</span><textarea id="taskDescription" rows="3" placeholder="Thêm một chút bối cảnh..."></textarea></label><div class="form-grid"><label class="field"><span><i>C</i>Trạng thái</span><select id="taskStatus"><option value="todo">Chưa làm</option><option value="in_progress">Đang làm</option><option value="done">Hoàn tất</option></select></label><label class="field"><span><i>D</i>Độ ưu tiên</span><select id="taskPriority"><option value="high">Cao</option><option value="normal">Bình thường</option><option value="low">Thấp</option></select></label><label class="field"><span><i>E</i>Hạn hoàn thành</span><input id="taskDueDate" type="date" /></label><label class="field"><span><i>F</i>Danh mục</span><select id="taskCategory"></select></label></div><label class="field field-wide"><span><i>G</i>Tags <small>phân cách bằng dấu phẩy</small></span><input id="taskTags" placeholder="important, meeting" /></label><div class="modal-actions"><button type="button" class="button button-ghost" data-close-modal>Hủy</button><button type="submit" class="button button-primary"><span class="btn-label">Lưu công việc</span><svg class="btn-spinner" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5"/></svg></button></div></form></div>
+  <aside class="detail-drawer" id="detailDrawer" aria-hidden="true"><div class="drawer-header"><span class="eyebrow">Task detail</span><button class="icon-button" id="closeDrawer" aria-label="Đóng chi tiết"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div id="drawerContent"></div></aside>
+  <div class="drawer-scrim" id="drawerScrim" hidden></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

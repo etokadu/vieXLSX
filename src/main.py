@@ -15,6 +15,12 @@ def appDirectory():
     return os.path.dirname(os.path.abspath(__file__))
 
 
+def resourceDirectory():
+    if getattr(sys, "_MEIPASS", None):
+        return sys._MEIPASS
+    return os.path.dirname(appDirectory())
+
+
 CONFIG_PATH = os.path.join(appDirectory(), "config.json")
 
 
@@ -727,6 +733,27 @@ def buildParser():
         description="CLI todo list synchronized with Excel"
     )
     parser.add_argument(
+        "--web",
+        action="store_true",
+        help="run the local browser server instead of the desktop window"
+    )
+    parser.add_argument(
+        "--cli",
+        action="store_true",
+        help="open the legacy interactive terminal UI"
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8765,
+        help="web server port"
+    )
+    parser.add_argument(
+        "--no-browser",
+        action="store_true",
+        help="do not open a browser when starting the web app"
+    )
+    parser.add_argument(
         "--file",
         default=DEFAULT_EXCEL_PATH,
         help="Excel file path"
@@ -773,6 +800,24 @@ def buildParser():
 def main():
     parser = buildParser()
     args = parser.parse_args()
+
+    if args.command is None and not args.cli and not args.web:
+        from desktop_app import run_desktop_app
+
+        frontendPath = os.path.join(resourceDirectory(), "frontend")
+        return run_desktop_app(args.file, frontendPath, CONFIG, args.port)
+
+    if args.command is None and args.web:
+        from web_server import run_web_server
+
+        frontendPath = os.path.join(resourceDirectory(), "frontend")
+        return run_web_server(
+            args.file,
+            frontendPath,
+            CONFIG,
+            port=args.port,
+            open_browser=not args.no_browser
+        )
 
     if args.command is None:
         return runInteractive(TodoClient(args.file))
@@ -866,4 +911,12 @@ def main():
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except Exception as error:
+        try:
+            with open(os.path.join(appDirectory(), "app-error.log"), "a", encoding="utf-8") as file:
+                file.write(f"{type(error).__name__}: {error}\n")
+        except OSError:
+            pass
+        raise
