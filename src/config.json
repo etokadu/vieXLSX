@@ -1,0 +1,18 @@
+{
+  "app_name": "vieXLSX",
+  "version": "1.0.0",
+  "author": "Kadu",
+  "github": "https://github.com/etokadu/vieXLSX",
+  "last_update": "2026-09-05",
+  "latest_feature": "Excel checkbox, task styling, keyboard task sheet, config settings, and time picker",
+  "category_options": [
+    "work",
+    "personal",
+    "home"
+  ],
+  "tag_options": [
+    "important",
+    "urgent",
+    "meeting"
+  ]
+}

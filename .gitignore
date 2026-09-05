@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging / PyInstaller
+# Bỏ qua thư mục build chứa các file tạm của PyInstaller trong thư mục run
+run/build/
+*.spec
+run/*.spec
+
+# Executable file
+# (Tùy chọn: Bỏ comment dòng dưới nếu KHÔNG muốn đẩy file .exe lên GitHub - Thường khuyên dùng GitHub Releases thay vì push trực tiếp exe)
+# run/*.exe
+
+# User-specific data files 
+# (Tùy chọn: Ngăn đẩy file cấu hình và data cá nhân ở thư mục run lên Git, trong khi vẫn giữ file mặc định ở src/)
+run/todo.xlsx
+run/config.json
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
