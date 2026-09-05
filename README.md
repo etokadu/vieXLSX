@@ -9,7 +9,7 @@
 ## 1. Introduction
 
 ### About the Author
-Hello! I am **Kudo (Pham Thai Dang Minh)**, an Information Technology (IT) student at the University of Information Technology, Vietnam National University Ho Chi Minh City (UIT - VNU-HCM).
+Hello! I am **Kadu (Pham Thai Dang Minh)**, an Information Technology (IT) student at the University of Information Technology, Vietnam National University Ho Chi Minh City (UIT - VNU-HCM).
 
 ### About the Project
 **vieXLSX** is a command-line interface (CLI) and interactive task management system designed to keep your workflow organized while securely storing all data in a standard Excel workbook (`task.xlsx`).
@@ -172,11 +172,11 @@ Categories, tags, and app metadata are managed in `config.json`:
 
 ## 7. Author
 
-- **Author**: Kudo
+- **Author**: Kadu - Pham Thai Dang Minh
 - **Institution**: University of Information Technology (UIT - VNU-HCM)
 - **Major**: Information Technology
-- **GitHub**: [@vinhkudo](https://github.com/vinhkudo)
-- **Repository**: [https://github.com/vinhkudo/vieXLSX](https://github.com/vinhkudo/vieXLSX)
+- **GitHub**: [@etokadu](https://github.com/etokadu)
+- **Repository**: [vieXLSX - github](https://github.com/etokadu/vieXLSX)
 
 ---
 
