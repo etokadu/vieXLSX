@@ -9,7 +9,7 @@
 ## 1. Introduction
 
 ### About the Author
-Hello! I am **Kudo (Pham Thai Dang Minh)**, an Information Technology (IT) student at the University of Information Technology, Vietnam National University Ho Chi Minh City (UIT - VNU-HCM).
+Hello! I am **Kadu (Pham Thai Dang Minh)**, an Information Technology (IT) student at the University of Information Technology, Vietnam National University Ho Chi Minh City (UIT - VNU-HCM).
 
 ### About the Project
 **vieXLSX** is a command-line interface (CLI) and interactive task management system designed to keep your workflow organized while securely storing all data in a standard Excel workbook (`task.xlsx`).
@@ -65,7 +65,7 @@ vieXLSX operates through a two-stage pipeline: a CLI/Interactive Client and an E
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/vinhkudo/vieXLSX.git
+git clone https://github.com/etokadu/vieXLSX.git
 cd vieXLSX
 ```
 
@@ -153,8 +153,8 @@ Categories, tags, and app metadata are managed in `config.json`:
 {
   "app_name": "vieXLSX",
   "version": "2.0.0",
-  "author": "Kudo",
-  "github": "https://github.com/vinhkudo/vieXLSX",
+  "author": "Kadu",
+  "github": "https://github.com/etokadu",
   "category_options": [
     "Work",
     "Personal",
@@ -172,11 +172,11 @@ Categories, tags, and app metadata are managed in `config.json`:
 
 ## 7. Author
 
-- **Author**: Kudo
+- **Author**: Kadu - Pham Thai Dang Minh
 - **Institution**: University of Information Technology (UIT - VNU-HCM)
 - **Major**: Information Technology
-- **GitHub**: [@vinhkudo](https://github.com/vinhkudo)
-- **Repository**: [https://github.com/vinhkudo/vieXLSX](https://github.com/vinhkudo/vieXLSX)
+- **GitHub**: [@etokadu](https://github.com/etokadu)
+- **Repository**: [vieXLSX - github](https://github.com/etokadu/vieXLSX)
 
 ---
 

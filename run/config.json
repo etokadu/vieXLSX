@@ -6,7 +6,7 @@
   "github": "https://github.com/etokadu/vieXLSX",
   "last_update": "2026-09-05",
   "latest_feature": "Realtime web workspace, Excel API sync, responsive UI, and one-file app build",
-  "language": "en",
+  "language": "vi",
   "autosave": true,
   "show_sidebar": true,
   "show_activity": true,
@@ -14,7 +14,8 @@
   "category_options": [
     "work",
     "personal",
-    "home"
+    "home",
+    "t"
   ],
   "tag_options": [
     "important",

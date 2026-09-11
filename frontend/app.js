@@ -1,6 +1,16 @@
 const STORAGE_KEY = "vieXLSX.v2.tasks";
 const CATEGORY_KEY = "vieXLSX.v2.categories";
-const today = "2026-09-05";
+function toISODate(date) { const y = date.getFullYear(), m = String(date.getMonth() + 1).padStart(2, "0"), d = String(date.getDate()).padStart(2, "0"); return `${y}-${m}-${d}`; }
+function startOfWeek(date) { const d = new Date(date); const offset = (d.getDay() + 6) % 7; d.setDate(d.getDate() - offset); return d; }
+const WEEKDAYS_VI = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+const WEEKDAYS_EN = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+function formatTodayLabel(language) {
+  const d = todayDate; const day = String(d.getDate()).padStart(2, "0"); const month = String(d.getMonth() + 1).padStart(2, "0");
+  return language === "en" ? `${WEEKDAYS_EN[d.getDay()]}, ${MONTHS_EN[d.getMonth()]} ${day}, ${d.getFullYear()}` : `${WEEKDAYS_VI[d.getDay()]}, ${day} tháng ${month}, ${d.getFullYear()}`;
+}
+const todayDate = new Date();
+const today = toISODate(todayDate);
 const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 
 const seedTasks = [
@@ -26,8 +36,8 @@ const $$ = (selector) => [...document.querySelectorAll(selector)];
 const statusLabels = { todo: "Chưa làm", in_progress: "Đang làm", done: "Hoàn tất", review: "Đang review" };
 const priorityLabels = { high: "Cao", normal: "Bình thường", low: "Thấp" };
 const translations = {
-  vi: { overview: "Tổng quan", tasks: "Công việc", today: "Hôm nay", upcoming: "Sắp tới", settings: "Cài đặt", newTask: "Công việc mới", all: "Tất cả", todo: "Chưa làm", inProgress: "Đang làm", done: "Hoàn tất", review: "Đang review", progress: "Tiến độ tuần này", active: "Đang thực hiện", due: "Đến hạn hôm nay", save: "Lưu công việc", cancel: "Hủy", workspace: "Workspace", categories: "Danh mục", synced: "Đã đồng bộ Excel", offline: "Chưa kết nối backend", focus: "Tiêu điểm hôm nay", focusEmpty: "Chọn một việc để bắt đầu", board: "Bảng công việc", month: "Tháng 09", week: "Công việc tuần này", filter: "Bộ lọc", create: "Tạo công việc", todoList: "Todo list", inReview: "In Review", recent: "Công việc gần đây", priority: "Việc ưu tiên", attention: "Cần chú ý", activity: "Hoạt động gần đây", allTasks: "Tất cả công việc", taskLibrary: "Task library", search: "Tìm theo tên, mô tả, tag...", clearDone: "Dọn việc đã xong", settingsTitle: "Cài đặt", settingsIntro: "Điều chỉnh cách vieXLSX hoạt động cho bạn.", workspaceName: "Tên workspace", autosave: "Tự động lưu Excel", showActivity: "Hiện hoạt động", showStats: "Hiện thống kê", export: "Xuất JSON", personalization: "Personalization", add: "Thêm", todayIntro: "Những việc cần được xử lý trong ngày.", upcomingIntro: "Giữ nhịp chủ động cho những ngày kế tiếp.", title: "Tên công việc", description: "Mô tả", status: "Trạng thái", priorityLabel: "Độ ưu tiên", dueDate: "Hạn hoàn thành", category: "Danh mục", tags: "Tags", emptyPriority: "Bạn đã hoàn tất mọi việc", emptyPriorityCopy: "Một khoảng thở rất xứng đáng.", emptyRecent: "Chưa có công việc", emptyRecentCopy: "Tạo task đầu tiên để bắt đầu.", emptySearch: "Không tìm thấy công việc", emptySearchCopy: "Thử đổi bộ lọc hoặc thêm task mới.", emptyToday: "Lịch hôm nay đang trống", emptyTodayCopy: "Một ngày nhẹ nhàng cũng là một kế hoạch tốt.", emptyUpcoming: "Chưa có việc sắp tới", emptyUpcomingCopy: "Bạn đang đi trước lịch trình.", emptyBoard: "Chưa có công việc", noDue: "Không có việc quá hạn", overdue: "việc đã quá hạn", dueLabel: "Quá hạn · ", notDue: "Chưa đặt hạn", deleted: "Đã xóa công việc trong Excel" },
-  en: { overview: "Overview", tasks: "Tasks", today: "Today", upcoming: "Upcoming", settings: "Settings", newTask: "New task", all: "All", todo: "To do", inProgress: "In progress", done: "Done", review: "In review", progress: "Weekly progress", active: "In progress", due: "Due today", save: "Save task", cancel: "Cancel", workspace: "Workspace", categories: "Categories", synced: "Excel synced", offline: "Backend offline", focus: "Today's focus", focusEmpty: "Choose a task to begin", board: "Board", month: "September", week: "This week's tasks", filter: "Filters", create: "Create task", todoList: "Todo list", inReview: "In review", recent: "Recent tasks", priority: "Priority tasks", attention: "Needs attention", activity: "Recent activity", allTasks: "All tasks", taskLibrary: "Task library", search: "Search by title, description, tag...", clearDone: "Clear completed", settingsTitle: "Settings", settingsIntro: "Adjust how vieXLSX works for you.", workspaceName: "Workspace name", autosave: "Auto-save Excel", showActivity: "Show activity", showStats: "Show statistics", export: "Export JSON", personalization: "Personalization", add: "Add", todayIntro: "Tasks that need attention today.", upcomingIntro: "Stay ahead of your upcoming work.", title: "Task title", description: "Description", status: "Status", priorityLabel: "Priority", dueDate: "Due date", category: "Category", tags: "Tags", emptyPriority: "All tasks are complete", emptyPriorityCopy: "A well-earned breather.", emptyRecent: "No tasks yet", emptyRecentCopy: "Create your first task to begin.", emptySearch: "No tasks found", emptySearchCopy: "Try changing the filters or add a new task.", emptyToday: "Today is clear", emptyTodayCopy: "A lighter day is a good plan too.", emptyUpcoming: "No upcoming tasks", emptyUpcomingCopy: "You are ahead of schedule.", emptyBoard: "No tasks", noDue: "No overdue tasks", overdue: "overdue", dueLabel: "Overdue · ", notDue: "No due date", deleted: "Task deleted from Excel" }
+  vi: { overview: "Tổng quan", tasks: "Công việc", today: "Hôm nay", upcoming: "Sắp tới", settings: "Cài đặt", newTask: "Công việc mới", all: "Tất cả", todo: "Chưa làm", inProgress: "Đang làm", done: "Hoàn tất", review: "Đang review", progress: "Tiến độ tuần này", active: "Đang thực hiện", due: "Đến hạn hôm nay", weekDone: "Hoàn tất tuần này", save: "Lưu công việc", cancel: "Hủy", workspace: "Workspace", categories: "Danh mục", synced: "Đã đồng bộ Excel", offline: "Chưa kết nối backend", focus: "Tiêu điểm hôm nay", focusEmpty: "Chọn một việc để bắt đầu", board: "Bảng công việc", month: "Tháng 09", week: "Công việc tuần này", filter: "Bộ lọc", create: "Tạo công việc", todoList: "Todo list", inReview: "In Review", recent: "Công việc gần đây", priority: "Việc ưu tiên", attention: "Cần chú ý", activity: "Hoạt động gần đây", allTasks: "Tất cả công việc", taskLibrary: "Task library", search: "Tìm theo tên, mô tả, tag...", clearDone: "Dọn việc đã xong", settingsTitle: "Cài đặt", settingsIntro: "Điều chỉnh cách vieXLSX hoạt động cho bạn.", workspaceName: "Tên workspace", autosave: "Tự động lưu Excel", showActivity: "Hiện hoạt động", showStats: "Hiện thống kê", export: "Xuất JSON", personalization: "Personalization", add: "Thêm", todayIntro: "Những việc cần được xử lý trong ngày.", upcomingIntro: "Giữ nhịp chủ động cho những ngày kế tiếp.", title: "Tên công việc", description: "Mô tả", status: "Trạng thái", priorityLabel: "Độ ưu tiên", dueDate: "Hạn hoàn thành", category: "Danh mục", tags: "Tags", emptyPriority: "Bạn đã hoàn tất mọi việc", emptyPriorityCopy: "Một khoảng thở rất xứng đáng.", emptyRecent: "Chưa có công việc", emptyRecentCopy: "Tạo task đầu tiên để bắt đầu.", emptySearch: "Không tìm thấy công việc", emptySearchCopy: "Thử đổi bộ lọc hoặc thêm task mới.", emptyToday: "Lịch hôm nay đang trống", emptyTodayCopy: "Một ngày nhẹ nhàng cũng là một kế hoạch tốt.", emptyUpcoming: "Chưa có việc sắp tới", emptyUpcomingCopy: "Bạn đang đi trước lịch trình.", emptyBoard: "Chưa có công việc", noDue: "Không có việc quá hạn", overdue: "việc đã quá hạn", dueLabel: "Quá hạn · ", notDue: "Chưa đặt hạn", deleted: "Đã xóa công việc trong Excel" },
+  en: { overview: "Overview", tasks: "Tasks", today: "Today", upcoming: "Upcoming", settings: "Settings", newTask: "New task", all: "All", todo: "To do", inProgress: "In progress", done: "Done", review: "In review", progress: "Weekly progress", active: "In progress", due: "Due today", weekDone: "Completed this week", save: "Save task", cancel: "Cancel", workspace: "Workspace", categories: "Categories", synced: "Excel synced", offline: "Backend offline", focus: "Today's focus", focusEmpty: "Choose a task to begin", board: "Board", month: "September", week: "This week's tasks", filter: "Filters", create: "Create task", todoList: "Todo list", inReview: "In review", recent: "Recent tasks", priority: "Priority tasks", attention: "Needs attention", activity: "Recent activity", allTasks: "All tasks", taskLibrary: "Task library", search: "Search by title, description, tag...", clearDone: "Clear completed", settingsTitle: "Settings", settingsIntro: "Adjust how vieXLSX works for you.", workspaceName: "Workspace name", autosave: "Auto-save Excel", showActivity: "Show activity", showStats: "Show statistics", export: "Export JSON", personalization: "Personalization", add: "Add", todayIntro: "Tasks that need attention today.", upcomingIntro: "Stay ahead of your upcoming work.", title: "Task title", description: "Description", status: "Status", priorityLabel: "Priority", dueDate: "Due date", category: "Category", tags: "Tags", emptyPriority: "All tasks are complete", emptyPriorityCopy: "A well-earned breather.", emptyRecent: "No tasks yet", emptyRecentCopy: "Create your first task to begin.", emptySearch: "No tasks found", emptySearchCopy: "Try changing the filters or add a new task.", emptyToday: "Today is clear", emptyTodayCopy: "A lighter day is a good plan too.", emptyUpcoming: "No upcoming tasks", emptyUpcomingCopy: "You are ahead of schedule.", emptyBoard: "No tasks", noDue: "No overdue tasks", overdue: "overdue", dueLabel: "Overdue · ", notDue: "No due date", deleted: "Task deleted from Excel" }
 };
 
 function tr(key) { return (translations[appConfig.language || "vi"] || translations.vi)[key] || key; }
@@ -95,7 +105,7 @@ function showToast(message) {
 }
 
 function renderCategories() {
-  const counts = Object.fromEntries(categories.map((category) => [category, tasks.filter((task) => task.category === category).length]));
+  const counts = Object.fromEntries(categories.map((category) => [category, tasks.filter((task) => (task.category || "").toLowerCase() === category.toLowerCase()).length]));
   $("#categoryList").innerHTML = categories.map((category, index) => `<button class="category-item ${activeCategory === category ? "selected" : ""}" data-category="${escapeHtml(category)}"><span class="category-dot ${index % 3 === 1 ? "c1" : index % 3 === 2 ? "c2" : ""}"></span><span>${escapeHtml(categoryLabel(category))}</span><strong>${counts[category] || 0}</strong></button>`).join("");
   $("#settingsCategories").innerHTML = categories.map((category) => `<span class="tag">${escapeHtml(categoryLabel(category))}</span>`).join("");
   $("#taskCategory").innerHTML = categories.map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(categoryLabel(category))}</option>`).join("");
@@ -110,7 +120,7 @@ function taskRow(task, compact = false, index = 0) {
     <button class="task-check ${task.status === "done" ? "done" : ""}" data-action="toggle" aria-label="Đánh dấu ${escapeHtml(task.title)}">${CHECK_SVG}</button>
     <span class="priority-marker ${task.priority}"></span>
     <div class="task-main"><div class="task-title ${task.status === "done" ? "done" : ""}">${escapeHtml(task.title)}</div><div class="task-meta"><span>${escapeHtml(categoryLabel(task.category))}</span>${tag ? `<span class="tag">${escapeHtml(tag)}</span>` : ""}${compact ? "" : `<span class="status-badge ${task.status}">${statusText(task.status)}</span>`}</div></div>
-    <span class="task-date ${isOverdue(task) ? "overdue" : ""}">${isOverdue(task) ? tr("dueLabel") : ""}${formatDate(task.due_date)}</span>
+    <span class="task-date ${isOverdue(task) ? "overdue" : ""}">${isOverdue(task) ? `<span class="overdue-label">${tr("dueLabel")}</span>` : ""}${formatDate(task.due_date)}</span>
     <div class="task-actions"><button class="row-action" data-action="open" title="Xem chi tiết"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></button><button class="row-action" data-action="delete" title="Xóa"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
   </div>`;
 }
@@ -121,7 +131,7 @@ function boardCard(task, index) {
 }
 
 function renderBoard() {
-  const columns = [["todo", tr("todoList")], ["in_progress", tr("inProgress")], ["review", tr("inReview")], ["done", tr("done")]];
+  const columns = [["todo", tr("todoList")], ["in_progress", tr("inProgress")], ["done", tr("done")]];
   $("#kanbanBoard").innerHTML = columns.map(([key, title]) => {
     const items = tasks.filter((task) => task.status === key);
     return `<section class="kanban-column column-${key}"><div class="kanban-column-head"><strong>${title}</strong><span>${items.length}</span><button class="column-add" data-board-add="${key}" aria-label="${tr("create")}">+</button><button class="column-menu" aria-label="${tr("board")}">•••</button></div><div class="kanban-cards">${items.length ? items.map(boardCard).join("") : `<div class="kanban-empty">${tr("emptyBoard")}</div>`}</div></section>`;
@@ -166,8 +176,19 @@ function renderOverview() {
   $("#priorityTasks").innerHTML = priorities.length ? priorities.map((task, i) => taskRow(task, true, i)).join("") : emptyState(tr("emptyPriority"), tr("emptyPriorityCopy"));
   const recent = [...tasks].sort((a, b) => b.created_time.localeCompare(a.created_time)).slice(0, 4);
   $("#recentTasks").innerHTML = recent.length ? recent.map((task, i) => taskRow(task, false, i)).join("") : emptyState(tr("emptyRecent"), tr("emptyRecentCopy"));
-  const heights = [42, 68, 52, 86, 63, 34, 45];
-  $("#activityChart").innerHTML = heights.map((height, index) => `<span class="chart-bar ${index === 3 ? "highlight" : ""}" style="height:${Math.max(12, Math.round(height * (tasks.length / 6)))}%; animation-delay:${index * 45}ms"></span>`).join("");
+  const weekStart = startOfWeek(todayDate);
+  const dayCounts = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(weekStart); d.setDate(d.getDate() + i); const iso = toISODate(d);
+    return tasks.filter((task) => (task.completed_time || "").slice(0, 10) === iso).length;
+  });
+  const todayIndex = (todayDate.getDay() + 6) % 7;
+  const maxCount = Math.max(1, ...dayCounts);
+  $("#activityChart").innerHTML = dayCounts.map((count, index) => `<span class="chart-bar ${index === todayIndex ? "highlight" : ""}" style="height:${count ? Math.max(12, Math.round((count / maxCount) * 100)) : 4}%; animation-delay:${index * 45}ms" title="${count}"></span>`).join("");
+  const completedThisWeek = dayCounts.reduce((sum, count) => sum + count, 0);
+  $("#weekDoneValue").dataset.suffix = ""; animateCount($("#weekDoneValue"), completedThisWeek);
+  $("#weekDoneCaption").textContent = completedThisWeek
+    ? (appConfig.language === "en" ? `${completedThisWeek} task${completedThisWeek === 1 ? "" : "s"} done` : `${completedThisWeek} việc đã hoàn tất`)
+    : (appConfig.language === "en" ? "No tasks done yet" : "Chưa có việc hoàn tất");
 }
 
 function prioritySort(a, b) { return ({ high: 0, normal: 1, low: 2 }[a.priority] - { high: 0, normal: 1, low: 2 }[b.priority]) || a.due_date.localeCompare(b.due_date); }
@@ -176,7 +197,7 @@ function emptyState(title, copy) { return `<div class="empty-state"><strong>${ti
 function filteredTasks() {
   const query = $("#searchInput")?.value.toLowerCase().trim() || "";
   const sort = $("#sortSelect")?.value || "priority";
-  let result = tasks.filter((task) => activeStatus === "all" || task.status === activeStatus).filter((task) => activeCategory === "all" || task.category === activeCategory).filter((task) => !query || [task.title, task.description, task.category, task.tags].join(" ").toLowerCase().includes(query));
+  let result = tasks.filter((task) => activeStatus === "all" || task.status === activeStatus).filter((task) => activeCategory === "all" || (task.category || "").toLowerCase() === activeCategory.toLowerCase()).filter((task) => !query || [task.title, task.description, task.category, task.tags].join(" ").toLowerCase().includes(query));
   if (sort === "priority") result.sort(prioritySort);
   if (sort === "due_date") result.sort((a, b) => (a.due_date || "9999").localeCompare(b.due_date || "9999"));
   if (sort === "created_time") result.sort((a, b) => b.created_time.localeCompare(a.created_time));
@@ -217,7 +238,8 @@ function closeDrawer() {
   $("#drawerScrim").classList.remove("show"); setTimeout(() => { $("#drawerScrim").hidden = true; }, 260);
 }
 
-function closeSidebar() { $(".sidebar").classList.remove("open"); }
+function openSidebar() { $(".sidebar").classList.add("open"); $("#sidebarScrim").hidden = false; requestAnimationFrame(() => $("#sidebarScrim").classList.add("show")); }
+function closeSidebar() { $(".sidebar").classList.remove("open"); $("#sidebarScrim").classList.remove("show"); setTimeout(() => { if (!$(".sidebar").classList.contains("open")) $("#sidebarScrim").hidden = true; }, 260); }
 
 function switchView(view) {
   currentView = view; const titles = { overview: tr("overview"), tasks: tr("allTasks"), today: tr("today"), upcoming: tr("upcoming"), settings: tr("settingsTitle") };
@@ -279,14 +301,16 @@ $("#taskModal").addEventListener("click", (event) => { if (event.target === $("#
 $("#closeDrawer").addEventListener("click", closeDrawer);
 $("#drawerScrim").addEventListener("click", closeDrawer);
 $("#mobileNewTask").addEventListener("click", () => openModal());
+$("#menuButton").addEventListener("click", () => { $(".sidebar").classList.contains("open") ? closeSidebar() : openSidebar(); });
+$("#sidebarScrim").addEventListener("click", closeSidebar);
 document.addEventListener("click", (event) => {
   const nav = event.target.closest("[data-view]"); if (nav) switchView(nav.dataset.view);
-  const boardAdd = event.target.closest("[data-board-add]"); if (boardAdd) { openModal(); $("#taskStatus").value = boardAdd.dataset.boardAdd === "review" ? "in_progress" : boardAdd.dataset.boardAdd; }
+  const boardAdd = event.target.closest("[data-board-add]"); if (boardAdd) { openModal(); $("#taskStatus").value = boardAdd.dataset.boardAdd; }
   const category = event.target.closest("[data-category]"); if (category) { activeCategory = category.dataset.category; switchView("tasks"); renderCategories(); renderTaskLists(); }
   const row = event.target.closest("[data-task-id]"); if (row) { const action = event.target.closest("[data-action]")?.dataset.action; if (action === "toggle") toggleTask(row.dataset.taskId); if (action === "delete") deleteTask(row.dataset.taskId); if (action === "open" || (!action && !event.target.closest("button"))) openDrawer(row.dataset.taskId); }
   const drawerEdit = event.target.closest("[data-drawer-edit]"); if (drawerEdit) { closeDrawer(); openModal(tasks.find((task) => task.id === Number(drawerEdit.dataset.drawerEdit))); }
   const drawerDelete = event.target.closest("[data-drawer-delete]"); if (drawerDelete) deleteTask(drawerDelete.dataset.drawerDelete);
-  if (event.target.closest(".sidebar") === null && $(".sidebar").classList.contains("open") && window.innerWidth <= 760) closeSidebar();
+  if (event.target.closest(".sidebar") === null && !event.target.closest("#menuButton") && $(".sidebar").classList.contains("open") && window.innerWidth <= 760) closeSidebar();
 });
 
 $("#newTaskButton").addEventListener("click", () => openModal()); $("#newTaskButtonAlt").addEventListener("click", () => openModal()); $("#boardNewTask").addEventListener("click", () => openModal());
@@ -330,12 +354,12 @@ function applyLanguage() {
     $$(`.tab-item[data-view="${view}"] span`).forEach((el) => { el.textContent = value; });
   });
   setText(".section-label span", text.categories); setText("#breadcrumbTitle", text.overview);
-  setText("#todayLabel", language === "en" ? "Friday, September 05, 2026" : "Thứ sáu, 05 tháng 09, 2026");
+  setText("#todayLabel", formatTodayLabel(language));
   setText("#overviewView h1", language === "en" ? "Welcome back, stay focused." : "Chào Kadu, tập trung nhé.");
   const intro = $("#overviewView .intro-copy"); if (intro) intro.textContent = language === "en" ? "A clear view of the work that matters today." : "Một góc nhìn rõ ràng cho những việc quan trọng nhất hôm nay.";
-  setText("#focusButton .focus-copy span", text.focus); setText("#statsGrid .stat-card:nth-child(1) .stat-top span", text.progress); setText("#statsGrid .stat-card:nth-child(2) .stat-top span", text.active); setText("#statsGrid .stat-card:nth-child(3) .stat-top span", text.due);
+  setText("#focusButton .focus-copy span", text.focus); setText("#statsGrid .stat-card:nth-child(1) .stat-top span", text.progress); setText("#statsGrid .stat-card:nth-child(2) .stat-top span", text.active); setText("#statsGrid .stat-card:nth-child(3) .stat-top span", text.due); setText("#statsGrid .stat-card:nth-child(4) .stat-top span", text.weekDone);
   setText(".priority-card .eyebrow", text.attention); setText(".priority-card h2", text.priority); setText(".activity-card .eyebrow", text.activity); setText(".activity-card h2", text.activity); setText(".recent-card h2", text.recent);
-  setAll("#statsGrid .stat-card > p", [language === "en" ? "tasks needing attention" : "việc cần bạn chú ý", "", language === "en" ? "compared with last week" : "so với tuần trước"]);
+  setText("#statsGrid .stat-card:nth-child(2) > p", language === "en" ? "tasks needing attention" : "việc cần bạn chú ý");
   setText(".priority-card .text-button", language === "en" ? "View all →" : "Xem tất cả →"); setText(".recent-card .text-button", language === "en" ? "Open list →" : "Mở danh sách →");
   setAll(".chart-labels span", language === "en" ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] : ["T2", "T3", "T4", "T5", "T6", "T7", "CN"]);
   setText(".board-month", text.month); setText(".board-heading strong", text.board); setText(".board-subtitle", text.week); setText("#boardFilterButton", text.filter); setText("#boardNewTask", `+ ${text.create}`);
@@ -343,8 +367,14 @@ function applyLanguage() {
   $$("#statusFilters .filter-pill").forEach((button) => { button.textContent = { all: text.all, todo: text.todo, in_progress: text.inProgress, done: text.done }[button.dataset.status]; });
   const sortLabels = language === "en" ? ["Highest priority", "Nearest due date", "Recently added", "Name A-Z"] : ["Ưu tiên cao nhất", "Hạn gần nhất", "Mới thêm", "Tên A-Z"];
   $$("#sortSelect option").forEach((option, index) => { option.textContent = sortLabels[index]; });
-  setText("#settingsView h1", text.settingsTitle); setText("#settingsView .intro-copy", text.settingsIntro); setText("#settingsCategories + .add-inline button", text.add); setText("#settingsExport", text.export); setAll("#settingsView .setting-row h3", [text.workspaceName, text.autosave, text.showActivity, text.showStats, text.export]);
-  setAll("#settingsView .setting-row p", [language === "en" ? "Shown in the desktop app." : "Tên hiển thị trên app desktop.", language === "en" ? "Save every change to the workbook." : "Lưu ngay mọi thay đổi vào workbook.", language === "en" ? "Hide the activity chart." : "Ẩn biểu đồ để giao diện nhẹ hơn.", language === "en" ? "Hide overview statistics." : "Ẩn các thẻ số liệu ở tổng quan.", language === "en" ? "Export a JSON backup." : "Xuất dữ liệu JSON khi cần backup."]);
+  setText("#settingsView h1", text.settingsTitle); setText("#settingsView .intro-copy", text.settingsIntro); setText("#settingsCategories + .add-inline button", text.add); setText("#settingsExport", text.export);
+  const setSettingRow = (id, title, desc) => { const row = $(`#${id}`)?.closest(".setting-row"); if (!row) return; const h3 = row.querySelector("h3"); const p = row.querySelector("p"); if (h3) h3.textContent = title; if (p) p.textContent = desc; };
+  setSettingRow("appNameInput", text.workspaceName, language === "en" ? "Shown in the desktop app." : "Tên hiển thị trên app desktop.");
+  setSettingRow("usernameInput", "Username", language === "en" ? "Shown in the sidebar." : "Tên hiển thị ở sidebar.");
+  setSettingRow("autosaveToggle", text.autosave, language === "en" ? "Save every change to the workbook." : "Lưu ngay mọi thay đổi vào workbook.");
+  setSettingRow("activityToggle", text.showActivity, language === "en" ? "Hide the activity chart." : "Ẩn biểu đồ để giao diện nhẹ hơn.");
+  setSettingRow("statsToggle", text.showStats, language === "en" ? "Hide overview statistics." : "Ẩn các thẻ số liệu ở tổng quan.");
+  setSettingRow("settingsExport", language === "en" ? "Sync Excel" : "Đồng bộ Excel", language === "en" ? "Export a JSON backup." : "Xuất dữ liệu JSON khi cần backup.");
   setText("#todayView h1", text.today); setText("#todayView .intro-copy", text.todayIntro); setText("#upcomingView h1", text.upcoming); setText("#upcomingView .intro-copy", text.upcomingIntro);
   const fieldLabels = [text.title, text.description, text.status, text.priorityLabel, text.dueDate, text.category, text.tags]; $$("#taskForm .field span").forEach((label, index) => { const marker = label.querySelector("i"); const small = label.querySelector("small"); label.textContent = ""; if (marker) label.append(marker); label.append(document.createTextNode(fieldLabels[index] || "")); if (small) label.append(small); });
   $("#taskDescription").placeholder = language === "en" ? "Add some context..." : "Thêm một chút bối cảnh..."; $("#taskTitle").placeholder = language === "en" ? "Example: Prepare weekly report" : "Ví dụ: Chuẩn bị báo cáo tuần"; $("#taskTags").placeholder = language === "en" ? "important, meeting" : "important, meeting";
